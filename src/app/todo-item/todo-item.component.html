@@ -1,1 +1,23 @@
+<li [ngClass]="{ completed: todo.status, editing: edit }">
+  <div class="view">
+    <input
+      class="toggle"
+      type="checkbox"
+      (change)="toggleStatusTodo(todo.id)"
+      [checked]="todo.status"
+    /><label (dblclick)="createEditInput(true)" (dblclick)="focusTodo()">{{
+      todo.text
+    }}</label
+    ><button class="destroy" (click)="removeTodo(todo.id)"></button>
+  </div>
 
+  <input
+    class="edit"
+    [(ngModel)]="text"
+    (keyup.escape)="editTodo(false, $event)"
+    (keyup.enter)="editTodo(false, $event)"
+    (blur)="editTodo(false, $event)"
+    *ngIf="edit"
+    #todoFocus
+  />
+</li>

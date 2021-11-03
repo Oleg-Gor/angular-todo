@@ -14,21 +14,17 @@
       id="toggle-all"
       class="toggle-all"
       type="checkbox"
+      [checked]="completedTodos() === todoList.length"
       (change)="toggleStatusAllTodos()"
     />
-    <label for="toggle-all">Mark all as complete</label>
-    <ul class="todo-list">
-      <li *ngFor="let todo of todoList">
-        <div class="view">
-          <input
-            class="toggle"
-            type="checkbox"
-            (change)="toggleStatusTodo(todo.id)"
-            [checked]="todo.status"
-          /><label>{{ todo.text }}</label
-          ><button class="destroy" (click)="removeTodo(todo.id)"></button>
-        </div>
-      </li>
+    <label for="toggle-all" *ngIf="todoList.length">Mark all as complete</label>
+    <ul class="todo-list" *ngFor="let todo of todoList">
+      <app-todo-item
+        (removeId)="removeTodo($event)"
+        (toggleTodoId)="toggleStatusTodo($event)"
+        (editTodoId)="editTodo($event)"
+        [todo]="todo"
+      ></app-todo-item>
     </ul>
   </section>
   <footer class="footer" *ngIf="todoList.length">
@@ -48,9 +44,9 @@
       </li>
     </ul>
     <button
-    class="clear-completed"
-    *ngIf="completedTodos()"
-    (click)="removeCompletedTodos()"
+      class="clear-completed"
+      *ngIf="completedTodos()"
+      (click)="removeCompletedTodos()"
     >
       Clear completed
     </button>

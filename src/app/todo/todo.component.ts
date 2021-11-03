@@ -1,23 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, DoCheck, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-todo',
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.css']
 })
-export class TodoComponent implements OnInit {
+export class TodoComponent implements OnInit, DoCheck {
 
-  todoList = [
-    { "id": 1635867015981, "text": "48", "status": false },
-    { "id": 1635940637787, "text": "sdf", "status": false },
-    { "id": 1635940639211, "text": "sddddd", "status": false },
-    { "id": 1635940640299, "text": "gdsgs", "status": true },
-    { "id": 1635940641259, "text": "ddd", "status": false }
-  ]
+  todoList = []
+  todoName = "test-1"
 
   constructor() { }
 
   ngOnInit(): void {
+    let newTodoList;
+    if (localStorage[this.todoName]) {
+      newTodoList = JSON.parse(localStorage[this.todoName]);
+      this.todoList = newTodoList;
+    }
+  }
+
+  ngDoCheck() {
+    const localStorageTodoList = JSON.stringify(this.todoList);
+    localStorage.setItem(this.todoName, localStorageTodoList);
+
   }
 
   addTodo(event) {
@@ -31,6 +37,12 @@ export class TodoComponent implements OnInit {
       this.todoList.push(newTodo);
     }
   }
+
+  editTodo(event) {
+    const index = this.todoList.findIndex((todo) => todo.id === event.id);
+    this.todoList[index].text = event.text;
+  }
+
   removeTodo(id) {
     const index = this.todoList.findIndex((todo) => todo.id === id);
     this.todoList.splice(index, 1);
