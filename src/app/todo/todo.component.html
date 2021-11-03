@@ -1,0 +1,58 @@
+<section class="todoapp">
+  <header class="header">
+    <h1>todos</h1>
+    <input
+      class="new-todo"
+      placeholder="What needs to be done?"
+      autofocus
+      (blur)="addTodo($event)"
+      (keyup.enter)="addTodo($event)"
+    />
+  </header>
+  <section class="main">
+    <input
+      id="toggle-all"
+      class="toggle-all"
+      type="checkbox"
+      (change)="toggleStatusAllTodos()"
+    />
+    <label for="toggle-all">Mark all as complete</label>
+    <ul class="todo-list">
+      <li *ngFor="let todo of todoList">
+        <div class="view">
+          <input
+            class="toggle"
+            type="checkbox"
+            (change)="toggleStatusTodo(todo.id)"
+            [checked]="todo.status"
+          /><label>{{ todo.text }}</label
+          ><button class="destroy" (click)="removeTodo(todo.id)"></button>
+        </div>
+      </li>
+    </ul>
+  </section>
+  <footer class="footer" *ngIf="todoList.length">
+    <span class="todo-count">
+      {{ uncompletedTodos() }}
+      {{ uncompletedTodos() === 1 ? "item" : "items" }} left
+    </span>
+    <ul class="filters">
+      <li>
+        <a href="#/" class="selected">All</a>
+      </li>
+      <li>
+        <a href="#/active">Active</a>
+      </li>
+      <li>
+        <a href="#/completed">Completed</a>
+      </li>
+    </ul>
+    <button
+    class="clear-completed"
+    *ngIf="completedTodos()"
+    (click)="removeCompletedTodos()"
+    >
+      Clear completed
+    </button>
+  </footer>
+</section>
