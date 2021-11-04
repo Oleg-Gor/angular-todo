@@ -1,4 +1,5 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-todo',
@@ -8,15 +9,17 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 export class TodoComponent implements OnInit, DoCheck {
 
   todoList = []
+  filteredTodoList = []
   todoName = "test-1"
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
     let newTodoList;
     if (localStorage[this.todoName]) {
       newTodoList = JSON.parse(localStorage[this.todoName]);
       this.todoList = newTodoList;
+      this.filteredTodoList = this.todoList
     }
   }
 
@@ -24,7 +27,10 @@ export class TodoComponent implements OnInit, DoCheck {
     const localStorageTodoList = JSON.stringify(this.todoList);
     localStorage.setItem(this.todoName, localStorageTodoList);
 
+    this.goToPostsPage()
   }
+
+
 
   addTodo(event) {
     if (event.target.value.trim()) {
@@ -65,6 +71,25 @@ export class TodoComponent implements OnInit, DoCheck {
       countOfUnChecked > 0 ? (todo.status = true) : (todo.status = false);
       return todo;
     });
+  }
+
+  goToPostsPage() {
+    const path = this.router.url
+
+    switch (path) {
+      case "/active":
+        this.filteredTodoList = this.todoList.filter(
+          (todo) => !todo.status
+        );
+        break;
+      case "/completed":
+        this.filteredTodoList = this.todoList.filter((todo) => todo.status);
+        break;
+      default:
+        this.filteredTodoList = this.todoList;
+    }
+
+
   }
 
   completedTodos() {

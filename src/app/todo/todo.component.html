@@ -22,7 +22,7 @@
 
 
       <app-todo-item
-        *ngFor="let todo of todoList"
+        *ngFor="let todo of filteredTodoList"
         (removeId)="removeTodo($event)"
         (toggleTodoId)="toggleStatusTodo($event)"
         (editTodoId)="editTodo($event)"
@@ -37,13 +37,18 @@
     </span>
     <ul class="filters">
       <li>
-        <a routerLink="/" routerLinkActive="selected" [routerLinkActiveOptions]="{exact:true}">All</a>
+        <a [routerLink]="['/']"
+        routerLinkActive="selected"
+        [routerLinkActiveOptions]="{exact:true}"
+        >All</a>
       </li>
       <li>
-        <a routerLink="/active" routerLinkActive="selected">Active</a>
+        <a [routerLink]="['/active']" routerLinkActive="selected"
+        >Active</a>
       </li>
       <li>
-        <a routerLink="/completed" routerLinkActive="selected">Completed</a>
+        <a [routerLink]="['/completed']" routerLinkActive="selected"
+        >Completed</a>
       </li>
     </ul>
     <button
