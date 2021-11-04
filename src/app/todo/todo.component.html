@@ -18,8 +18,11 @@
       (change)="toggleStatusAllTodos()"
     />
     <label for="toggle-all" *ngIf="todoList.length">Mark all as complete</label>
-    <ul class="todo-list" *ngFor="let todo of todoList">
+    <ul class="todo-list">
+
+
       <app-todo-item
+        *ngFor="let todo of todoList"
         (removeId)="removeTodo($event)"
         (toggleTodoId)="toggleStatusTodo($event)"
         (editTodoId)="editTodo($event)"
@@ -34,13 +37,13 @@
     </span>
     <ul class="filters">
       <li>
-        <a href="#/" class="selected">All</a>
+        <a routerLink="/" routerLinkActive="selected" [routerLinkActiveOptions]="{exact:true}">All</a>
       </li>
       <li>
-        <a href="#/active">Active</a>
+        <a routerLink="/active" routerLinkActive="selected">Active</a>
       </li>
       <li>
-        <a href="#/completed">Completed</a>
+        <a routerLink="/completed" routerLinkActive="selected">Completed</a>
       </li>
     </ul>
     <button
