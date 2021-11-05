@@ -8,32 +8,13 @@ export interface TodoList {
 }
 
 @Injectable({ providedIn: 'root' })
-export class TodoService implements OnInit, DoCheck {
-
-
+export class TodoService {
 
   todoList:TodoList[] = [  ]
   filteredTodoList = []
   todoName = "test-1"
 
   constructor(private router: Router) { }
-
-  ngOnInit(): void {
-    let newTodoList;
-    if (localStorage[this.todoName]) {
-      newTodoList = JSON.parse(localStorage[this.todoName]);
-      this.todoList = newTodoList;
-      this.filteredTodoList = this.todoList
-    }
-  }
-
-  ngDoCheck() {
-    const localStorageTodoList = JSON.stringify(this.todoList);
-    localStorage.setItem(this.todoName, localStorageTodoList);
-
-    this.goToPostsPage()
-  }
-
 
 
   addTodo(event) {

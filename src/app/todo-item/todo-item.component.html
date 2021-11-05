@@ -4,12 +4,12 @@
     <input
       class="toggle"
       type="checkbox"
-      (change)="toggleStatusTodo(todo.id)"
+      (change)="todoService.toggleStatusTodo(todo.id)"
       [checked]="todo.status"
     /><label (dblclick)="createEditInput(true)" (dblclick)="focusTodo()">{{
       todo.text
     }}</label
-    ><button class="destroy" (click)="removeTodo(todo.id)"></button>
+    ><button class="destroy" (click)="todoService.removeTodo(todo.id)"></button>
   </div>
 
   <input

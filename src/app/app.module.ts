@@ -6,6 +6,7 @@ import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodoComponent } from './todo/todo.component';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-rout.module';
+import { TodoService } from './shared/todo.service';
 
 
 

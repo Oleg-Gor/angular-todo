@@ -5,8 +5,8 @@
       class="new-todo"
       placeholder="What needs to be done?"
       autofocus
-      (blur)="addTodo($event)"
-      (keyup.enter)="addTodo($event)"
+      (blur)="todoService.addTodo($event)"
+      (keyup.enter)="todoService.addTodo($event)"
     />
   </header>
   <section class="main">
@@ -14,24 +14,21 @@
       id="toggle-all"
       class="toggle-all"
       type="checkbox"
-      [checked]="completedTodos() === todoList.length"
-      (change)="toggleStatusAllTodos()"
+      [checked]="todoService.completedTodos() === todoService.todoList.length"
+      (change)="todoService.toggleStatusAllTodos()"
     />
-    <label for="toggle-all" *ngIf="todoList.length">Mark all as complete</label>
+    <label for="toggle-all" *ngIf="todoService.todoList.length">Mark all as complete</label>
     <ul class="todo-list">
       <app-todo-item
-        *ngFor="let todo of TodoService.filteredTodoList"
-        (removeId)="removeTodo($event)"
-        (toggleTodoId)="toggleStatusTodo($event)"
-        (editTodoId)="editTodo($event)"
+        *ngFor="let todo of todoService.filteredTodoList"
         [todo]="todo"
       ></app-todo-item>
     </ul>
   </section>
-  <footer class="footer" *ngIf="todoList.length">
+  <footer class="footer" *ngIf="todoService.todoList.length">
     <span class="todo-count">
-      {{ uncompletedTodos() }}
-      {{ uncompletedTodos() === 1 ? "item" : "items" }} left
+      {{ todoService.uncompletedTodos() }}
+      {{ todoService.uncompletedTodos() === 1 ? "item" : "items" }} left
     </span>
     <ul class="filters">
       <li>
@@ -51,8 +48,8 @@
     </ul>
     <button
       class="clear-completed"
-      *ngIf="completedTodos()"
-      (click)="removeCompletedTodos()"
+      *ngIf="todoService.completedTodos()"
+      (click)="todoService.removeCompletedTodos()"
     >
       Clear completed
     </button>
