@@ -19,10 +19,8 @@
     />
     <label for="toggle-all" *ngIf="todoList.length">Mark all as complete</label>
     <ul class="todo-list">
-
-
       <app-todo-item
-        *ngFor="let todo of filteredTodoList"
+        *ngFor="let todo of TodoService.filteredTodoList"
         (removeId)="removeTodo($event)"
         (toggleTodoId)="toggleStatusTodo($event)"
         (editTodoId)="editTodo($event)"
