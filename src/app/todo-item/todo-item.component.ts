@@ -1,4 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { TodoService } from '../shared/todo.service';
 
 @Component({
   selector: 'app-todo-item',
@@ -8,14 +9,11 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 export class TodoItemComponent implements OnInit {
 
   @Input() todo
-  @Output() removeId = new EventEmitter()
-  @Output() toggleTodoId = new EventEmitter()
-  @Output() editTodoId = new EventEmitter()
   @ViewChild('todoFocus') todoRef: ElementRef
   edit: false
   text: ''
 
-  constructor() {
+  constructor(public todoService: TodoService) {
   }
 
   ngOnInit(): void {
@@ -33,16 +31,10 @@ export class TodoItemComponent implements OnInit {
       this.createEditInput(status);
     } else if (this.edit) {
       this.createEditInput(status);
-      this.editTodoId.emit({ id: this.todo.id, text: this.text })
+      this.todoService.editTodo({ id: this.todo.id, text: this.text })
     }
   }
 
-  removeTodo(id) {
-    this.removeId.emit(id)
-  }
-  toggleStatusTodo(id) {
-    this.toggleTodoId.emit(id)
-  }
   focusTodo() {
     this.todoRef.nativeElement.focus()
   }
