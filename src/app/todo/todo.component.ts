@@ -15,7 +15,6 @@ export class TodoComponent  {
     ) {
   }
 
-
   ngOnInit(): void {
 
     let newTodoList;
@@ -32,9 +31,4 @@ export class TodoComponent  {
 
     this.todoService.goToPostsPage()
   }
-
-
-
-
-
 }

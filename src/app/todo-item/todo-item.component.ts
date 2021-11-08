@@ -27,7 +27,8 @@ export class TodoItemComponent implements OnInit {
     }
   }
 
-  editTodo(status:boolean, event) {
+  editTodo(status:boolean, event:KeyboardEvent  ) {
+
     if (event.type === "keyup" && event.code === "Escape") {
       this.createEditInput(status);
     } else if (this.edit) {

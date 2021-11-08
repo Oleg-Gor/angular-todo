@@ -2,31 +2,31 @@ import { Injectable, DoCheck, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Todo, EditTodo } from 'src/app/types/index'
 
-
 @Injectable({ providedIn: 'root' })
 export class TodoService {
 
   todoList: Todo[] = []
-  filteredTodoList = []
+  filteredTodoList: Todo[] = []
   todoName = "test-1"
 
   constructor(private router: Router) { }
-
-
   addTodo(event) {
+    const target = event.target as HTMLInputElement
+    const value = target.value.trim()
 
-    if ((<HTMLInputElement>event.target).value.trim()) {
-      const newTodo = {
-        id: Date.now(),
-        text: event.target.value,
-        status: false,
-      };
-      event.target.value = "";
-      this.todoList.push(newTodo);
+    if (!value) return
+
+    this.todoList.push(new newTodo(value));
+    event.target.value = "";
+
+    function newTodo(value): void {
+      this.id = Date.now();
+      this.text = value;
+      this.status = false
     }
   }
 
-  editTodo(event:EditTodo) {
+  editTodo(event: EditTodo) {
     const index = this.todoList.findIndex((todo) => todo.id === event.id);
     this.todoList[index].text = event.text;
   }
@@ -44,7 +44,7 @@ export class TodoService {
     const index = this.todoList.findIndex((todo) => todo.id === id);
     this.todoList[index].status = !this.todoList[index].status;
   }
-  toggleStatusAllTodos():void {
+  toggleStatusAllTodos(): void {
     const countOfUnChecked = this.todoList.filter(
       (todo) => !todo.status
     ).length;
@@ -55,7 +55,7 @@ export class TodoService {
     });
   }
 
-  goToPostsPage():void {
+  goToPostsPage(): void {
     const path = this.router.url
 
     switch (path) {
@@ -78,7 +78,6 @@ export class TodoService {
   uncompletedTodos(): number {
     return this.todoList.filter((todo) => !todo.status).length
   }
-
-
-
 }
+
+
