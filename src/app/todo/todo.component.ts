@@ -13,8 +13,6 @@ export class TodoComponent  {
   constructor(public todoService: TodoService,
     public router: Router
     ) {
-
-
   }
 
 

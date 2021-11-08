@@ -1,16 +1,12 @@
 import { Injectable, DoCheck, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Todo, EditTodo } from 'src/app/types/index'
 
-export interface TodoList {
-  id: number
-  text: string
-  status: boolean
-}
 
 @Injectable({ providedIn: 'root' })
 export class TodoService {
 
-  todoList:TodoList[] = []
+  todoList: Todo[] = []
   filteredTodoList = []
   todoName = "test-1"
 
@@ -18,9 +14,10 @@ export class TodoService {
 
 
   addTodo(event) {
-    if (event.target.value.trim()) {
+
+    if ((<HTMLInputElement>event.target).value.trim()) {
       const newTodo = {
-        id: +new Date(),
+        id: Date.now(),
         text: event.target.value,
         status: false,
       };
@@ -29,12 +26,12 @@ export class TodoService {
     }
   }
 
-  editTodo(event) {
+  editTodo(event:EditTodo) {
     const index = this.todoList.findIndex((todo) => todo.id === event.id);
     this.todoList[index].text = event.text;
   }
 
-  removeTodo(id) {
+  removeTodo(id: number) {
     const index = this.todoList.findIndex((todo) => todo.id === id);
     this.todoList.splice(index, 1);
   }
@@ -43,11 +40,11 @@ export class TodoService {
     this.todoList = this.todoList.filter((todo) => !todo.status);
   }
 
-  toggleStatusTodo(id) {
+  toggleStatusTodo(id: number) {
     const index = this.todoList.findIndex((todo) => todo.id === id);
     this.todoList[index].status = !this.todoList[index].status;
   }
-  toggleStatusAllTodos() {
+  toggleStatusAllTodos():void {
     const countOfUnChecked = this.todoList.filter(
       (todo) => !todo.status
     ).length;
@@ -58,7 +55,7 @@ export class TodoService {
     });
   }
 
-  goToPostsPage() {
+  goToPostsPage():void {
     const path = this.router.url
 
     switch (path) {
@@ -73,14 +70,12 @@ export class TodoService {
       default:
         this.filteredTodoList = this.todoList;
     }
-
-
   }
 
-  completedTodos() {
+  completedTodos(): number {
     return this.todoList.filter((todo) => todo.status).length
   }
-  uncompletedTodos() {
+  uncompletedTodos(): number {
     return this.todoList.filter((todo) => !todo.status).length
   }
 

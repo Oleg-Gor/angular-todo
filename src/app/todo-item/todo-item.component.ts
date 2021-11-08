@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { TodoService } from '../shared/todo.service';
+import { Todo } from 'src/app/types/index'
 
 @Component({
   selector: 'app-todo-item',
@@ -8,10 +9,10 @@ import { TodoService } from '../shared/todo.service';
 })
 export class TodoItemComponent implements OnInit {
 
-  @Input() todo
+  @Input() todo:Todo
   @ViewChild('todoFocus') todoRef: ElementRef
-  edit: false
-  text: ''
+  edit:boolean = false
+  text:string = ''
 
   constructor(public todoService: TodoService) {
   }
@@ -19,14 +20,14 @@ export class TodoItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  createEditInput(status) {
+  createEditInput(status:boolean) {
     this.edit = status;
     if (status) {
       this.text = this.todo.text
     }
   }
 
-  editTodo(status, event) {
+  editTodo(status:boolean, event) {
     if (event.type === "keyup" && event.code === "Escape") {
       this.createEditInput(status);
     } else if (this.edit) {
