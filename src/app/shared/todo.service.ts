@@ -10,7 +10,7 @@ export interface TodoList {
 @Injectable({ providedIn: 'root' })
 export class TodoService {
 
-  todoList:TodoList[] = [  ]
+  todoList:TodoList[] = []
   filteredTodoList = []
   todoName = "test-1"
 
