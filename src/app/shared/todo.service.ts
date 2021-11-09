@@ -1,6 +1,7 @@
 import { Injectable, DoCheck, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Todo, EditTodo } from 'src/app/types/index'
+import TodoCreate from '../todo/createTodo';
 
 @Injectable({ providedIn: 'root' })
 export class TodoService {
@@ -12,18 +13,12 @@ export class TodoService {
   constructor(private router: Router) { }
   addTodo(event) {
     const target = event.target as HTMLInputElement
-    const value = target.value.trim()
+    const value:string = target.value.trim()
 
     if (!value) return
-
-    this.todoList.push(new newTodo(value));
+    this.todoList.push(new TodoCreate(value));
     event.target.value = "";
 
-    function newTodo(value): void {
-      this.id = Date.now();
-      this.text = value;
-      this.status = false
-    }
   }
 
   editTodo(event: EditTodo) {
