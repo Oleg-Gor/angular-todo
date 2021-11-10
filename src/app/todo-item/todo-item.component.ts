@@ -1,6 +1,7 @@
+import Todo from 'src/app/todo/Todo'
+
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { TodoService } from '../shared/todo.service';
-import { Todo } from 'src/app/types/index'
 
 @Component({
   selector: 'app-todo-item',
@@ -9,7 +10,7 @@ import { Todo } from 'src/app/types/index'
 })
 export class TodoItemComponent implements OnInit {
 
-  @Input() todo:Todo
+  @Input() todo: Todo
   @ViewChild('todoFocus') todoRef: ElementRef
   edit:boolean = false
   text:string = ''

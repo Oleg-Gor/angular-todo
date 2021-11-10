@@ -1,7 +1,8 @@
+import Todo from 'src/app/todo/Todo'
+
 import { Injectable, DoCheck, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Todo, EditTodo } from 'src/app/types/index'
-import TodoCreate from '../todo/createTodo';
+import { EditTodo } from 'src/app/types/index'
 
 @Injectable({ providedIn: 'root' })
 export class TodoService {
@@ -16,7 +17,7 @@ export class TodoService {
     const value:string = target.value.trim()
 
     if (!value) return
-    this.todoList.push(new TodoCreate(value));
+    this.todoList.push(new Todo(value));
     event.target.value = "";
 
   }

@@ -1,3 +1,5 @@
+import Todo from 'src/app/todo/Todo'
+
 import { Component } from '@angular/core';
 import { TodoService } from '../shared/todo.service';
 import { Router } from '@angular/router';
@@ -15,13 +17,11 @@ export class TodoComponent  {
     ) {}
 
   ngOnInit(): void {
-
-    let newTodoList;
-    if (localStorage[this.todoService.todoName]) {
-      newTodoList = JSON.parse(localStorage[this.todoService.todoName]);
-      this.todoService.todoList = newTodoList;
-      this.todoService.filteredTodoList = this.todoService.todoList
-    }
+    if (!localStorage[this.todoService.todoName]) return;
+    const restoredTodos = JSON.parse(localStorage[this.todoService.todoName]);
+    if (!Array.isArray(restoredTodos)) return
+    this.todoService.todoList = restoredTodos.map((t) => Todo.fromObject(t));
+    this.todoService.filteredTodoList = this.todoService.todoList
   }
 
   ngDoCheck() {
