@@ -27,7 +27,6 @@ export class TodoComponent  {
   ngDoCheck() {
     const localStorageTodoList = JSON.stringify(this.todoService.todoList);
     localStorage.setItem(this.todoService.todoName, localStorageTodoList);
-
     this.todoService.goToPostsPage()
   }
 }
