@@ -3,6 +3,8 @@ import Todo from 'src/app/todo/Todo'
 import { Component } from '@angular/core';
 import { TodoService } from '../shared/todo.service';
 import { Router } from '@angular/router';
+import { map } from 'rxjs/operators'
+import { TodoItemComponent } from '../todo-item/todo-item.component';
 
 
 @Component({
@@ -10,23 +12,29 @@ import { Router } from '@angular/router';
   templateUrl: './todo.component.html',
   styleUrls: ['./todo.component.css']
 })
-export class TodoComponent  {
+export class TodoComponent {
+  todoList: Todo[] = [];
 
-  constructor(public todoService: TodoService,
+  constructor(
+    public todoService: TodoService,
     public router: Router
-    ) {}
+  ) {
+    this.todoService.todoList.subscribe(todoList => {
+      console.log('NEW TODO LIST: ', todoList)
+      this.todoList = todoList;
+      localStorage.setItem(this.todoService.todoName,  JSON.stringify(todoList));
+    })
+   }
 
-  ngOnInit(): void {
-    if (!localStorage[this.todoService.todoName]) return;
-    const restoredTodos = JSON.parse(localStorage[this.todoService.todoName]);
-    if (!Array.isArray(restoredTodos)) return
-    this.todoService.todoList = restoredTodos.map((t) => Todo.fromObject(t));
-    this.todoService.filteredTodoList = this.todoService.todoList
-  }
+  addTodo(event) {
+    const target = event.target as HTMLInputElement
+    const value: string = target.value.trim()
 
-  ngDoCheck() {
-    const localStorageTodoList = JSON.stringify(this.todoService.todoList);
-    localStorage.setItem(this.todoService.todoName, localStorageTodoList);
-    this.todoService.goToPostsPage()
+    if (!value) return
+
+    this.todoService.addTodo(value);
+
+    event.target.value = "";
+
   }
 }

@@ -5,8 +5,8 @@
       class="new-todo"
       placeholder="What needs to be done?"
       autofocus
-      (blur)="todoService.addTodo($event)"
-      (keyup.enter)="todoService.addTodo($event)"
+      (blur)="addTodo($event)"
+      (keyup.enter)="addTodo($event)"
     />
   </header>
   <section class="main">
@@ -14,18 +14,18 @@
       id="toggle-all"
       class="toggle-all"
       type="checkbox"
-      [checked]="todoService.completedTodos() === todoService.todoList.length"
+      [checked]="todoService.completedTodos() === todoService.countTodos()"
       (change)="todoService.toggleStatusAllTodos()"
     />
-    <label for="toggle-all" *ngIf="todoService.todoList.length">Mark all as complete</label>
+    <label for="toggle-all" *ngIf="todoService.todoList.getValue().length">Mark all as complete</label>
     <ul class="todo-list">
       <app-todo-item
-        *ngFor="let todo of todoService.filteredTodoList"
+        *ngFor="let todo of todoList; trackBy:todoService.identify"
         [todo]="todo"
       ></app-todo-item>
     </ul>
   </section>
-  <footer class="footer" *ngIf="todoService.todoList.length">
+  <footer class="footer" *ngIf="todoService.todoList.getValue().length">
     <span class="todo-count">
       {{ todoService.uncompletedTodos() }}
       {{ todoService.uncompletedTodos() === 1 ? "item" : "items" }} left
@@ -38,7 +38,7 @@
         >All</a>
       </li>
       <li>
-        <a [routerLink]="['/active']" routerLinkActive="selected"
+        <a [routerLink]="['/', 'active']" routerLinkActive="selected"
         >Active</a>
       </li>
       <li>

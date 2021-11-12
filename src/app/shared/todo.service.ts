@@ -3,77 +3,117 @@ import Todo from 'src/app/todo/Todo'
 import { Injectable, DoCheck, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { EditTodo } from 'src/app/types/index'
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class TodoService {
 
-  todoList: Todo[] = []
-  filteredTodoList: Todo[] = []
+  todoList: BehaviorSubject<Todo[]>;
+  //filteredTodoList: Todo[] = []
   todoName = "test-1"
 
-  constructor(private router: Router) { }
-  addTodo(event) {
-    const target = event.target as HTMLInputElement
-    const value:string = target.value.trim()
+  constructor(private router: Router) {
+    const savedData = localStorage[this.todoName];
+    const savedTodos = savedData && typeof savedData === 'string' ? JSON.parse(localStorage[this.todoName]) : [];
+    this.todoList = new BehaviorSubject(savedTodos);
+  }
 
-    if (!value) return
-    this.todoList.push(new Todo(value));
-    event.target.value = "";
+  addTodo(value) {
+    const newTodo = new Todo(value);
+
+    const newTodoList = [...this.todoList.getValue(), newTodo]
+
+    this.todoList.next(newTodoList)
 
   }
 
-  editTodo(event: EditTodo) {
-    const index = this.todoList.findIndex((todo) => todo.id === event.id);
-    this.todoList[index].text = event.text;
+
+  countTodos() {
+    let count = 0;
+    this.todoList.subscribe(todo => count = todo.length)
+    return count
+
   }
 
-  removeTodo(id: number) {
-    const index = this.todoList.findIndex((todo) => todo.id === id);
-    this.todoList.splice(index, 1);
+  completedTodos() {
+    // let completed = 0;
+
+    // this.todoList.subscribe(todos => completed = todos.filter((todo) => todo.status).length)
+
+    // return completed
+
   }
 
-  removeCompletedTodos() {
-    this.todoList = this.todoList.filter((todo) => !todo.status);
+  uncompletedTodos() {
+    let uncompleted = 0;
+    this.todoList.subscribe(todos => uncompleted = todos.filter((todo) => !todo.status).length)
+
+    // console.log('subj', uncompleted)
+    // console.log('getValue', this.todoList.getValue().filter((todo) => !todo.status).length)
+    return uncompleted
   }
 
-  toggleStatusTodo(id: number) {
-    const index = this.todoList.findIndex((todo) => todo.id === id);
-    this.todoList[index].status = !this.todoList[index].status;
-  }
-  toggleStatusAllTodos(): void {
-    const countOfUnChecked = this.todoList.filter(
+
+  toggleStatusAllTodos() {
+    let countOfUnChecked;
+    this.todoList.subscribe(todos => countOfUnChecked = todos.filter(
       (todo) => !todo.status
-    ).length;
+    ).length)
 
-    this.todoList = this.todoList.map((todo) => {
+    let newTodoList
+    this.todoList.subscribe(todos => newTodoList = todos.map((todo) => {
       countOfUnChecked > 0 ? (todo.status = true) : (todo.status = false);
       return todo;
-    });
+    }))
+
+    this.todoList.next(newTodoList);
+
   }
 
-  goToPostsPage(): void {
-    const path = this.router.url
+  identify(index,todo) {
+        return todo.id
+      }
 
-    switch (path) {
-      case "/active":
-        this.filteredTodoList = this.todoList.filter(
-          (todo) => !todo.status
-        );
-        break;
-      case "/completed":
-        this.filteredTodoList = this.todoList.filter((todo) => todo.status);
-        break;
-      default:
-        this.filteredTodoList = this.todoList;
+
+  /*
+    editTodo(event: EditTodo) {
+      const index = this.todoList.findIndex((todo) => todo.id === event.id);
+      this.todoList[index].text = event.text;
     }
-  }
 
-  completedTodos(): number {
-    return this.todoList.filter((todo) => todo.status).length
-  }
-  uncompletedTodos(): number {
-    return this.todoList.filter((todo) => !todo.status).length
-  }
+    removeTodo(id: number) {
+      const index = this.todoList.findIndex((todo) => todo.id === id);
+      this.todoList.splice(index, 1);
+    }
+
+    removeCompletedTodos() {
+      this.todoList = this.todoList.filter((todo) => !todo.status);
+    }
+
+    toggleStatusTodo(id: number) {
+      const index = this.todoList.findIndex((todo) => todo.id === id);
+      this.todoList[index].status = !this.todoList[index].status;
+    }
+
+    goToPostsPage(): void {
+      const path = this.router.url
+      switch (path) {
+        case "/active":
+          this.filteredTodoList = this.todoList.filter(
+            (todo) => !todo.status
+          );
+          break;
+        case "/completed":
+          this.filteredTodoList = this.todoList.filter((todo) => todo.status);
+          break;
+        default:
+          this.filteredTodoList = this.todoList;
+      }
+    }
+
+
+
+ */
 }
 
 
