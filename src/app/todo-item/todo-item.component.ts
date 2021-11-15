@@ -21,24 +21,22 @@ export class TodoItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  removeTodo(id: number) {
+  removeTodo(id: number):void {
     this.todoService.removeTodo(id);
   }
 
-  toggleStatusTodo(id) {
+  toggleStatusTodo(id:number):void {
     this.todoService.toggleStatusTodo(id);
   }
 
-
-  createEditInput(status: boolean) {
+  createEditInput(status: boolean):void {
     this.edit = status;
     if (status) {
       this.text = this.todo.text
     }
   }
 
-  editTodo(status: boolean, event: KeyboardEvent) {
-
+  editTodo(status: boolean, event: KeyboardEvent):void {
     if (event.type === "keyup" && event.code === "Escape") {
       this.createEditInput(status);
     } else if (this.edit) {
@@ -47,7 +45,7 @@ export class TodoItemComponent implements OnInit {
     }
   }
 
-  focusTodo() {
+  focusTodo():void {
     this.todoRef.nativeElement.focus()
   }
 }

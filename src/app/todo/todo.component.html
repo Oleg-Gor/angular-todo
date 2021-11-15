@@ -20,7 +20,7 @@
     <label for="toggle-all" *ngIf="countTodos">Mark all as complete</label>
     <ul class="todo-list">
       <app-todo-item
-        *ngFor="let todo of filteredTodoList; trackBy:identify"
+        *ngFor="let todo of todoList | filter:path; trackBy:identify"
         [todo]="todo"
       ></app-todo-item>
     </ul>

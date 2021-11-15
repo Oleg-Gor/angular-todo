@@ -6,6 +6,7 @@ import { TodoItemComponent } from './todo-item/todo-item.component';
 import { TodoComponent } from './todo/todo.component';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-rout.module';
+import { FilterPipe } from './pipes/filter.pipe';
 
 
 
@@ -13,7 +14,8 @@ import { AppRoutingModule } from './app-rout.module';
   declarations: [
     AppComponent,
     TodoItemComponent,
-    TodoComponent
+    TodoComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,

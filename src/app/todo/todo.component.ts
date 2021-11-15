@@ -3,8 +3,6 @@ import Todo from 'src/app/todo/Todo'
 import { Component, DoCheck } from '@angular/core';
 import { TodoService } from '../shared/todo.service';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators'
-import { TodoItemComponent } from '../todo-item/todo-item.component';
 
 
 @Component({
@@ -18,6 +16,7 @@ export class TodoComponent implements DoCheck {
   countTodos: number = 0;
   completedTodos: number = 0;
   uncompletedTodos: number = 0;
+  path: string = '/'
 
   constructor(
     public todoService: TodoService,
@@ -31,14 +30,10 @@ export class TodoComponent implements DoCheck {
       this.completedTodos = this.todoService.completedTodos()
       this.uncompletedTodos = this.todoService.uncompletedTodos()
     })
-
-    this.todoService.path.subscribe(path => {
-      this.filteredTodoList = this.todoService.goToPostsPage(path)
-    })
   }
 
   ngDoCheck(){
-    this.todoService.changePath()
+    this.path = this.todoService.changePath()
   }
 
   addTodo(event):void {
