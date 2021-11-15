@@ -39,17 +39,16 @@ export class TodoService {
 
   toggleStatusAllTodos(): void {
     const countOfUnChecked = this.todoList.getValue().filter((todo) => !todo.status).length
-    const newTodoList = this.todoList.getValue().map((todo) => {
-      countOfUnChecked > 0 ? (todo.status = true) : (todo.status = false);
-      return todo;
-    })
+    const newTodoList = this.todoList.getValue().map((todo) => ({...todo, status: countOfUnChecked > 0}))
     this.todoList.next(newTodoList);
   }
 
   toggleStatusTodo(id: number): void {
-    const index = this.todoList.getValue().findIndex((todo) => todo.id === id);
-    this.todoList.getValue()[index].status = !this.todoList.getValue()[index].status;
-    this.todoList.next(this.todoList.getValue())
+    const newTodoList = this.todoList.getValue().map((todo) => ({
+      ...todo,
+      status: todo.id === id ? !todo.status : todo.status
+    }))
+    this.todoList.next(newTodoList)
   }
 
   removeCompletedTodos(): void {
