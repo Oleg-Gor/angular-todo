@@ -14,21 +14,21 @@
       id="toggle-all"
       class="toggle-all"
       type="checkbox"
-      [checked]="todoService.completedTodos() === todoService.countTodos()"
-      (change)="todoService.toggleStatusAllTodos()"
+      [checked]="completedTodos === countTodos"
+      (change)="toggleStatusAllTodos()"
     />
-    <label for="toggle-all" *ngIf="todoService.todoList.getValue().length">Mark all as complete</label>
+    <label for="toggle-all" *ngIf="countTodos">Mark all as complete</label>
     <ul class="todo-list">
       <app-todo-item
-        *ngFor="let todo of todoList; trackBy:todoService.identify"
+        *ngFor="let todo of filteredTodoList; trackBy:identify"
         [todo]="todo"
       ></app-todo-item>
     </ul>
   </section>
-  <footer class="footer" *ngIf="todoService.todoList.getValue().length">
+  <footer class="footer" *ngIf="countTodos">
     <span class="todo-count">
-      {{ todoService.uncompletedTodos() }}
-      {{ todoService.uncompletedTodos() === 1 ? "item" : "items" }} left
+      {{ uncompletedTodos }}
+      {{ uncompletedTodos === 1 ? "item" : "items" }} left
     </span>
     <ul class="filters">
       <li>
@@ -48,8 +48,8 @@
     </ul>
     <button
       class="clear-completed"
-      *ngIf="todoService.completedTodos()"
-      (click)="todoService.removeCompletedTodos()"
+      *ngIf="completedTodos"
+      (click)="removeCompletedTodos()"
     >
       Clear completed
     </button>
